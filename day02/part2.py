@@ -1,6 +1,11 @@
 # f = 'day02/input-example.txt'
 f = 'day02/input.txt'
 
+"""
+No sorting and no brute force.
+This is done by analysing the diffs.
+"""
+
 def getDiffs(line):
   return [line[i + 1] - line[i] for i in range(len(line) - 1)]
 
