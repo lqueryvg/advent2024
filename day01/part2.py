@@ -1,4 +1,3 @@
-
 # f = 'day01/input-example.txt'
 f = 'day01/input.txt'
 

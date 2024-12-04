@@ -1,8 +1,10 @@
-# f = 'day02/input-example.txt'
-f = 'day02/input.txt'
+# f = 'input-example.txt'
+# f = 'input-example2.txt'
+f = 'input.txt'
 
 """
-No sorting and no brute force.
+No sorting.
+No brute force.
 This is done by analysing the diffs.
 """
 
@@ -17,11 +19,11 @@ def getDirection(n):
   return 0
 
 def getExpectedDirection(diffs):
-    # get the direction of the sum of all directions of the differences
+    # get the direction of the sum of all drections of the differences
     return getDirection(sum([getDirection(diff) for diff in diffs]))
 
 def isSafe(report):
-  errorCount = 0
+  errorAlreadyFound = False
   reportDiffs = getDiffs(report)
   expectedDirection = getExpectedDirection(reportDiffs)
 
@@ -35,20 +37,27 @@ def isSafe(report):
   for diffIndex, thisDiff in enumerate(reportDiffs):
 
     if not diffIsValid(thisDiff):
-      errorCount += 1
-      if errorCount > 1:
-        return False # don't tolerate 2 errors
+      if errorAlreadyFound: return False # do not tolerate more than one error
+      errorAlreadyFound = True
+      
+      # the last diff has the error, we can skip it and declare the report safe
+      if diffIndex >= len(reportDiffs) - 1:
+        return True 
 
       if diffIndex == 0:
-        newDiff = reportDiffs[diffIndex+1] + thisDiff
-        if diffIsValid(newDiff):
-          # the second level is wrong: ignore it by
-          # merging the first diff into the second
-          reportDiffs[diffIndex+1] = newDiff
-        continue
-        
-      elif diffIndex < len(reportDiffs) - 1:
+        # if next diff is valid, the left level
+        # must be invalid so skip it
+        if diffIsValid(reportDiffs[diffIndex+1]): continue
+
+        # the next diff is ok, so the level on the right must be invalid
+        # skip it by merging the first diff into the second
         reportDiffs[diffIndex+1] += thisDiff
+
+        continue
+      
+      # an error somewhere between first and last diff
+      # skip the level on the right by merging this diff into the next diff
+      reportDiffs[diffIndex+1] += thisDiff
   
   return True
 
@@ -60,7 +69,8 @@ def main(lines):
       safeCount += 1
   print(safeCount)
 
-with open(f) as f:
-  lines = f.readlines()
-  lines = [line.strip().split(' ') for line in lines]
-  main(lines)
+if __name__ == '__main__':
+  with open(f) as f:
+    lines = f.readlines()
+    lines = [line.strip().split(' ') for line in lines]
+    main(lines)

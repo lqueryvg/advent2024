@@ -1,6 +1,5 @@
-
-# f = 'day02/input-example.txt'
-f = 'day02/input.txt'
+# f = 'input-example.txt'
+f = 'input.txt'
 
 def getDirection(n):
   if n > 0:
@@ -37,7 +36,8 @@ def main(lines):
   
   print(safeCount)
 
-with open(f) as f:
-  lines = f.readlines()
-  lines = [line.strip().split(' ') for line in lines]
-  main(lines)
+if __name__ == '__main__':
+  with open(f) as f:
+    lines = f.readlines()
+    lines = [line.strip().split(' ') for line in lines]
+    main(lines)

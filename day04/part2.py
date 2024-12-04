@@ -1,5 +1,5 @@
-# f = 'day04/input-example.txt'
-f = 'day04/input.txt'
+# f = 'input-example.txt'
+f = 'input.txt'
 
 grid = []
 def checkCell(x, y, char):
@@ -27,7 +27,8 @@ def main():
         count += 1
   return count
  
-with open(f) as f:
-  lines = f.readlines()
-  grid = [line.strip() for line in lines]
-  print(main())
+if __name__ == '__main__':
+  with open(f) as f:
+    lines = f.readlines()
+    grid = [line.strip() for line in lines]
+    print(main())

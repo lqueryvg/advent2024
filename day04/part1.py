@@ -1,7 +1,5 @@
-import re
-
-# f = 'day04/input-example.txt'
-f = 'day04/input.txt'
+# f = 'input-example.txt'
+f = 'input.txt'
 
 word = 'XMAS'
 grid = []
@@ -24,7 +22,8 @@ def main():
         count += search(x, y, direction, 0)
   return count
  
-with open(f) as f:
-  lines = f.readlines()
-  grid = [line.strip() for line in lines]
-  print(main())
+if __name__ == '__main__':
+  with open(f) as f:
+    lines = f.readlines()
+    grid = [line.strip() for line in lines]
+    print(main())

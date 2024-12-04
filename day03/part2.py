@@ -1,7 +1,8 @@
+import os
 import re
 
-# f = 'day03/input-example2.txt'
-f = 'day03/input.txt'
+# f = 'input-example2.txt'
+f = 'input.txt'
 
 def main(lines):
   total = 0
@@ -23,7 +24,9 @@ def main(lines):
  
   return total
 
-with open(f) as f:
-  lines = f.readlines()
-  lines = [line.strip() for line in lines]
-  print(main(lines))
+
+if __name__ == '__main__':
+  with open(f) as f:
+    lines = f.readlines()
+    lines = [line.strip() for line in lines]
+    main(lines)
