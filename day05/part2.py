@@ -2,23 +2,23 @@
 # f = 'input-example.txt'
 f = 'input.txt'
 
-def isGoodLine(line, rules):
+def getMiddleIfBad(line, rules):
+  swapsNeeded = False
   for i in range(0, len(line)):
     for j in range(i + 1, len(line)):
       l = line[i]
       r = line[j]
-      rule = f"{r}|{l}"
-      if rule in rules:
-        return False
-  return True
+      if f"{r}|{l}" in rules:
+        swapsNeeded = True
+        line[i] = r
+        line[j] = l
+  
+  return line[len(line) // 2] if swapsNeeded else 0
 
 def main(rules, lines):
   total = 0
-  middle = 0
   for line in lines:
-    middle = line[len(line) // 2]
-    if isGoodLine(line, rules):
-      total += middle
+    total += getMiddleIfBad(line, rules)
   return total
 
 if __name__ == '__main__':
