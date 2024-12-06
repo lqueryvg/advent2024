@@ -14,18 +14,14 @@ def findStart():
 
   raise Exception(f"Unable to find guard")
 
-def rotateDirectionClockwise(d):
-  if d[0] == 0:
-    if d[1] == -1:
-      return [1, 0]
-    if d[1] == 1:
-      return [-1, 0]
-  if d[1] == 0:
-    if d[0] == -1:
-      return [0, -1]
-    if d[0] == 1:
-      return [0, 1]
-  raise Exception(f"Invalid direction: {d}")
+def turn(direction):
+  dx, dy = direction
+  if dx == 0:
+    return [-dy, 0]
+  if dy == 0:
+    return [0, dx]
+  
+  raise ValueError(f"invalid direction {direction}")
 
 def isInBounds(x, y):
   return x >= 0 and x < len(grid[0]) and y >= 0 and y < len(grid)
@@ -50,7 +46,7 @@ def makesLoop(ox, oy): # obstacle coords
       break
 
     if (x == ox and y == oy) or grid[y][x] == '#':
-      d = rotateDirectionClockwise(d)
+      d = turn(d)
       addVisited()
       continue
 
@@ -65,8 +61,6 @@ def makesLoop(ox, oy): # obstacle coords
   return False
 
 def main():
-  # print(makesLoop(0,2))
-  # print(makesLoop(3,6))
   count = 0
   global startX, startY
   startX, startY = findStart()
@@ -83,5 +77,4 @@ if __name__ == '__main__':
   with open(f) as f:
     lines = f.readlines()
     grid = [line.strip() for line in lines]
-
     print(main())

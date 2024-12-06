@@ -12,19 +12,14 @@ def findStart():
 
   raise Exception(f"Unable to find guard")
 
-def rotateDirectionClockwise(d):
-  # print("turn")
-  if d[0] == 0:
-    if d[1] == -1:
-      return [1, 0]
-    if d[1] == 1:
-      return [-1, 0]
-  if d[1] == 0:
-    if d[0] == -1:
-      return [0, -1]
-    if d[0] == 1:
-      return [0, 1]
-  raise Exception(f"Invalid direction: {d}")
+def turn(direction):
+  dx, dy = direction
+  if dx == 0:
+    return [-dy, 0]
+  if dy == 0:
+    return [0, dx]
+  
+  raise ValueError(f"invalid direction {direction}")
 
 def isInBounds(x, y):
   return x >= 0 and x < len(grid[0]) and y >= 0 and y < len(grid)
@@ -45,7 +40,7 @@ def main():
       break
 
     if grid[y][x] == '#':
-      d = rotateDirectionClockwise(d)
+      d = turn(d)
       continue
 
     gx = x
