@@ -3,27 +3,22 @@
 f = 'input.txt'
 
 def check(target, values, index):
-  # indent = " " * ((len(values) - index) * 2)
-  # print(f"{indent} {target=}, {values=}, {index=}, {op=}")
   if index < 0:
-    # print(f"{indent} NOT found")
     return False
 
-  # print(f"{indent} try +")
-  newTarget = target - values[index]
-  if newTarget == 0 and index == 0: return True
-  if check(newTarget, values, index - 1):
-    # print(f"{indent} found + {target=}, {values=}, {index=}")
+  if index == 0 and target == values[0]:
     return True
 
-  # print(f"{indent} try *")
-  newTarget = target / values[index]
-  if newTarget == 1 and index == 0: return True
-  if check(newTarget, values, index - 1):
-    # print(f"{indent} found * {target=}, {values=}, {index=}")
-    return True
-  
-  # print(f"{indent} not found")
+  newTarget = target - values[index]
+  if newTarget >= 0:
+    if check(newTarget, values, index - 1):
+      return True
+
+  if target % values[index] == 0:
+    newTarget = target // values[index]
+    if check(newTarget, values, index - 1):
+      return True
+
   return False
   
 def main(lines):
@@ -33,7 +28,6 @@ def main(lines):
     sp = line.split(': ')
     target = int(sp[0])
     values = [int(x) for x in sp[1].split()]
-    # print(f"{line=}, {sp=} {target=}, {values=}")
 
     if check(target, values, len(values) - 1):
       total += target
