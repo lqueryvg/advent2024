@@ -8,10 +8,14 @@ global grid
 def isOutOfBounds(x, y):
   return x < 0 or x >= len(grid[0]) or y < 0 or y >= len(grid)
 
-def addNode(x, y):
-  if isOutOfBounds(x, y):
-    return
-  nodes.add(f"{x},{y}")
+def addLine(point, delta):
+  x, y = point
+  while True:
+    nodes.add(f"{x},{y}")
+    x += delta[0]
+    y += delta[1]
+    if isOutOfBounds(x, y):
+      return
 
 def main():
   for y in range(0, len(grid)):
@@ -30,11 +34,8 @@ def main():
         [rx, ry] = kants[r]
         [dx, dy] = [rx - lx, ry - ly]
 
-        [nx, ny] = [rx + dx, ry + dy]
-        addNode(nx, ny)
-
-        [nx, ny] = [lx - dx, ly - dy]
-        addNode(nx, ny)
+        addLine(kants[l], [-dx, -dy])
+        addLine(kants[r], [dx, dy])
 
   return len(nodes)
  
