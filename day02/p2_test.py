@@ -1,5 +1,5 @@
 import unittest
-from .part2 import isSafe
+from .p2 import isSafe
 
 class TestIsSafe(unittest.TestCase):
     def test_no_errors(self):
