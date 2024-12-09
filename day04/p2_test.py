@@ -1,5 +1,5 @@
 import unittest
-from day04.p2 import checkCross, grid
+from .p2 import checkCross, grid
 
 class TestCheckCross(unittest.TestCase):
     def setUp(self):

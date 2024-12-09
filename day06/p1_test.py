@@ -1,6 +1,6 @@
 import unittest
 
-from day06.p1 import turn
+from .p1 import turn
 
 class TestTurn(unittest.TestCase):
   def test_turn_from_north(self):

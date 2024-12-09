@@ -1,7 +1,6 @@
-import os
 import re
 
-# f = 'input-example2.txt'
+#f = 'input-example2.txt'
 f = 'input.txt'
 
 def main(lines):
@@ -29,4 +28,4 @@ if __name__ == '__main__':
   with open(f) as f:
     lines = f.readlines()
     lines = [line.strip() for line in lines]
-    main(lines)
+    print(main(lines))
