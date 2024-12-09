@@ -2,11 +2,18 @@
 # f = 'input-example-tiny.txt'
 f = 'input.txt'
 
-disk = [] # one element for each block; the value is the file id or '.' for free
+"""
+Approach: two pointers
+1. Convert line into a list of blocks, the value is either 
+2. search gap blocks from the left and file blocks from the right
+   moving the file blocks to the gaps until left and right pointers meet
+"""
+
+diskBlocks = [] # one element for each block; the value is the file id or '.' for free
 
 def readDisk(line):
   def extend(c, l):
-    disk.extend([c for _x in range(l)])
+    diskBlocks.extend([c for _ in range(l)])
 
   isFree = False
   id = 0
@@ -21,25 +28,25 @@ def readDisk(line):
 
 def moveBlocks():
   left = 0
-  right = len(disk) - 1
+  right = len(diskBlocks) - 1
   while True:
     if right <= left:
       break
-    if disk[left] != '.':
+    if diskBlocks[left] != '.':
       left += 1
       continue
-    if disk[right] == '.':
+    if diskBlocks[right] == '.':
       right -= 1
       continue
 
-    disk[left] = disk[right]
-    disk[right] = '.'
+    diskBlocks[left] = diskBlocks[right]
+    diskBlocks[right] = '.'
     right -= 1
 
 def calcChecksum():
   checksum = 0
-  for i in range(0, len(disk)):
-    id = disk[i]
+  for i in range(0, len(diskBlocks)):
+    id = diskBlocks[i]
     if id == '.':
       break
     checksum += i * id
@@ -47,7 +54,6 @@ def calcChecksum():
 
 def main(line):
 
-  global disk
   readDisk(line)
   moveBlocks()
   return calcChecksum()
