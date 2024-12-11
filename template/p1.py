@@ -1,18 +1,17 @@
-# f = 'input-example.txt'
 f = 'input.txt'
 
-stones = []
 
-def go():
-  return 1000
+def go(count):
+  pass
+  return 999
 
-def main():
+def main(count=25):
   global f, stones
   with open(f) as f:
     lines = f.readlines()
     lines = [line.strip() for line in lines]
     stones = lines[0].split(' ')
-    return go()
+    return go(count)
 
 if __name__ == '__main__':
   print(main())

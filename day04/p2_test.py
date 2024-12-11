@@ -1,10 +1,11 @@
 import unittest
-from .p2 import checkCross, grid
+import p2 as p
+#from .p2 import checkCross, grid
 
 class TestCheckCross(unittest.TestCase):
     def setUp(self):
-        global grid
-        grid = [
+        #global grid
+        p.grid = [
             ['M', 'S', 'S', 'S'],
             ['S', 'A', 'M', 'S'],
             ['M', 'S', 'S', 'S'],
@@ -15,22 +16,22 @@ class TestCheckCross(unittest.TestCase):
     #     self.assertTrue(checkCross(1, 1, 'MSMS'))
 
     def test_checkCross_top_left(self):
-        self.assertFalse(checkCross(0, 0, 'MSMS'))
+        self.assertFalse(p.checkCross(0, 0, 'MSMS'))
 
     def test_checkCross_top_right(self):
-        self.assertFalse(checkCross(0, 3, 'MSMS'))
+        self.assertFalse(p.checkCross(0, 3, 'MSMS'))
 
     def test_checkCross_bottom_left(self):
-        self.assertFalse(checkCross(3, 0, 'MSMS'))
+        self.assertFalse(p.checkCross(3, 0, 'MSMS'))
 
     def test_checkCross_bottom_right(self):
-        self.assertFalse(checkCross(3, 3, 'MSMS'))
+        self.assertFalse(p.checkCross(3, 3, 'MSMS'))
 
     def test_checkCross_invalid_chars(self):
-        self.assertFalse(checkCross(1, 1, 'XXXX'))
+        self.assertFalse(p.checkCross(1, 1, 'XXXX'))
 
     def test_checkCross_out_of_bounds(self):
-        self.assertFalse(checkCross(5, 5, 'MSMS'))
+        self.assertFalse(p.checkCross(5, 5, 'MSMS'))
 
 if __name__ == '__main__':
     unittest.main()

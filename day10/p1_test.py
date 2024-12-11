@@ -2,7 +2,7 @@ import unittest
 from textwrap import dedent
 from unittest.mock import patch
 from io import StringIO
-import day10.p1 as p1
+import p1
 
 def getMockFile(s):
   return StringIO(dedent(s).lstrip())
