@@ -1,98 +1,106 @@
+from __future__ import annotations
 from typing import Set, TypeAlias, Literal
 
 f = 'input.txt'
 
 grid = []
 
-Coord: TypeAlias = tuple[int, int]
-Path: TypeAlias = tuple[Coord, Coord]
-Fence: TypeAlias = Literal["T", "B", "L", "R"]
-Fences: TypeAlias = set[Fence]
+Point: TypeAlias = tuple[int, int]
+Path: TypeAlias = tuple[Point, Point]
+Direction: TypeAlias = Literal["U", "D", "L", "R"]
+Fences: TypeAlias = set[Direction]
+allDirections: list[Direction] = ["U", "D", "L", "R"]
+offsets = {
+  "U": (0, -1),
+  "D": (0, 1),
+  "L": (-1, 0),
+  "R": (1, 0)
+}
 
-visited: Set[Coord] = set()
+visited: Set[Point] = set()
 pathsSeen: Set[Path] = set()
 
-def getGridValue(p: Coord) -> str:
+def getGridValue(p: Point) -> str:
   (x, y) = p
   return grid[y][x]
 
-def isOutOfBounds(p: Coord) -> bool:
+def isOutOfBounds(p: Point) -> bool:
   (x, y) = p
   return x < 0 or x >= len(grid[0]) or y < 0 or y >= len(grid)
 
-def hasFenceBetween(p1: Coord, p2: Coord) -> bool:
+
+def offset(p: Point, direction: Direction) -> Point:
+  (x, y) = p
+  (dx, dy) = offsets[direction]
+  return (x+dx, y+dy)
+
+
+def hasFenceBetween(p1: Point, p2: Point) -> bool:
   if isOutOfBounds(p2):
     return True
   return getGridValue(p1) != getGridValue(p2)
 
-def getFences(p: Coord) -> Fences:  # returns set of fences e.g. {"T","B","L","R"}
+def getFences(p: Point) -> Fences:  # returns set of fences e.g. {"U","D","L","R"}
   if isOutOfBounds(p):
     return set()
   
-  (x, y) = p
   s: Fences = set()
-  if hasFenceBetween(p, (x+1, y)):
-    s.add("R")
-  if hasFenceBetween(p, (x-1, y)):
-    s.add("L")
-  if hasFenceBetween(p, (x, y+1)):
-    s.add("B")
-  if hasFenceBetween(p, (x, y-1)):
-    s.add("T")
+  for direction in allDirections:
+    if hasFenceBetween(p, offset(p, direction)):
+      s.add(direction)
   return s
   
 def getCommonFences(s1: Fences, s2: Fences) -> Fences:
   return s1.intersection(s2)
 
-
-def addPath(p1: Coord, p2: Coord):
-  pathsSeen.add((p1, p2))
+def recordReturnPath(p1: Point, p2: Point):
   pathsSeen.add((p2, p1))
 
+def pathAlreadySeen(p1: Point, p2: Point) -> bool:
+    return (p2, p1) in pathsSeen
+
 def go(
-  currentCoord: Coord,
+  currentPoint: Point,
   plantType: str, 
   prevFences: Fences, 
-  prevCoord: Coord
-) -> Coord: 
+  prevPoint: Point
+) -> tuple[int, int]: 
   # returns (area, fences)
 
   # check end conditions
 
-  if isOutOfBounds(currentCoord):
+  if isOutOfBounds(currentPoint):
     return (0, 0)
-  
-  (x, y) = currentCoord
   
   # different plant
-  if getGridValue(currentCoord) != plantType:
+  if getGridValue(currentPoint) != plantType:
     return (0, 0)
 
-  currentFences = getFences(currentCoord)
+  currentFences = getFences(currentPoint)
 
-  if currentCoord in visited:
+  if currentPoint in visited:
     # same plant, already visited
-    if (prevCoord, currentCoord) in pathsSeen:
+    if pathAlreadySeen(currentPoint, prevPoint):
       return (0, 0) # add nothing
     else:
-      minus = len(getCommonFences(currentFences, prevFences))
-      addPath(prevCoord, currentCoord)
-      return (0, -minus)
+      # we've approached this point from a new direction
+      # (made a loop) so we need to make an adjustment to the number of fences
+      # to cater for common fences which have already been counted
+      adjustment = - len(getCommonFences(currentFences, prevFences))
+      recordReturnPath(prevPoint, currentPoint)
+      return (0, adjustment)
   
   # same plant, not visited yet
 
-  addPath(prevCoord, currentCoord)
+  recordReturnPath(prevPoint, currentPoint)
 
-  visited.add(currentCoord)
+  visited.add(currentPoint)
   area = 1
   numFences = len(currentFences) - len(getCommonFences(currentFences, prevFences))
 
-  for direction in [ [1,0], [0,1], [0,-1], [-1,0] ]:
-    dx, dy = direction
-    x1 = x + dx
-    y1 = y + dy
-
-    (a, f) = go((x1, y1), plantType, currentFences, currentCoord)
+  for direction in allDirections:
+    p1 = offset(currentPoint, direction)
+    (a, f) = go(p1, plantType, currentFences, currentPoint)
     area += a
     numFences += f
   
@@ -108,7 +116,7 @@ def main():
     cost = 0
     for y in range(0, len(grid)):
       for x in range(0, len(grid[y])):
-        p: Coord = (x, y)
+        p: Point = (x, y)
         (area, fences) = go(p, getGridValue(p), set(), (-1,-1))
         cost += area * fences
 
