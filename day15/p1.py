@@ -47,20 +47,21 @@ def findRobot() -> Point:
 
   raise Exception(f"Unable to find robot")
 
+
+def isBlocked(robot, direction) -> bool:
+  r = robot
+  while True:
+    r = offset(r, direction)
+    v = getGridValue(r)
+    if v == '.':
+      return False
+    if v == '#':
+      return True
+
 def moveRobot(robot: Point, direction: Direction) -> Point:
   # look ahead to see if there is an empty space before finding a wall
 
-  def isBlocked() -> bool:
-    r = robot
-    while True:
-      r = offset(r, direction)
-      v = getGridValue(r)
-      if v == '.':
-        return False
-      if v == '#':
-        return True
-  
-  if isBlocked():
+  if isBlocked(robot, direction):
     return robot
     
   v = '.'
