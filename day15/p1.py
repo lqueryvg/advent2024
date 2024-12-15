@@ -49,32 +49,35 @@ def findRobot() -> Point:
 
 def moveRobot(robot: Point, direction: Direction) -> Point:
   # look ahead to see if there is an empty space before finding a wall
-  r = robot
-  while True:
-    r = offset(r, direction)
-    v = getGridValue(r)
-    if v == '.':
-      break
-    if v == '#':
-      return robot
-    
-  # now we know that we can move and / or push
-  # replace the robot with an empty space
-  # set all subsequent cells to 'O' up to and including the first empty space
-  # finally set and return the new robot position
 
-  setGridValue(robot, '.')
-  # robot = offset(robot, direction)
+  def isBlocked() -> bool:
+    r = robot
+    while True:
+      r = offset(r, direction)
+      v = getGridValue(r)
+      if v == '.':
+        return False
+      if v == '#':
+        return True
+  
+  if isBlocked():
+    return robot
+    
+  v = '.'
   l = robot
+  def swap(l, v):
+    temp = getGridValue(l)
+    setGridValue(l, v)
+    return temp
+
   while True:
+    v = swap(l, v)
     l = offset(l, direction)
-    v = getGridValue(l)
-    setGridValue(l, 'O')
     if v == '.':
       break
-  robot = offset(robot, direction)
-  setGridValue(robot, '@')
-  return robot
+
+  return offset(robot, direction)
+
 
 def cost() -> int:
   total = 0
@@ -100,7 +103,7 @@ def go():
   # printGrid()
   for move in moves:
     robot = moveRobot(robot, cast(Direction, move))
-    print(f"{move=}, {robot=}")
+    # print(f"{move=}, {robot=}")
     # printGrid()
   return cost()
 
