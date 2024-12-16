@@ -26,22 +26,15 @@ def setGridValue(p: Point, value: str):
   (x, y) = p
   grid[y] = grid[y][:x] + value + grid[y][x+1:]
 
-# def isOutOfBounds(p: Point) -> bool:
-#   (x, y) = p
-#   return x < 0 or x >= len(grid[0]) or y < 0 or y >= len(grid)
-
-
 def offset(p: Point, direction: Direction) -> Point:
   (x, y) = p
   (dx, dy) = offsets[direction]
   return (x+dx, y+dy)
 
 def findRobot() -> Point:
-  # print("hello")
   for y in range(0, height):
     for x in range(0, width):
       p = (x, y)
-      # print(f"{p=}, {getGridValue(p)}")
       if getGridValue(p) == '@':
         return p
 
@@ -99,13 +92,9 @@ def printGrid():
   print('--------------------------------')
 
 def go():
-  # print(f"{width=}, {height=}, {moves=}, {grid=}")
   robot = findRobot()
-  # printGrid()
   for move in moves:
     robot = moveRobot(robot, cast(Direction, move))
-    # print(f"{move=}, {robot=}")
-    # printGrid()
   return cost()
 
 def main():
