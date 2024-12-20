@@ -1,0 +1,124 @@
+- labyrinth
+- stretch out the path into a line
+- number each step including the start and end
+- get step data:
+  store step number for each coord
+- get list of possible cheats
+  - find all walls where there is a space either side vertically
+    or horizontally
+    - each cheat is a pair of coords
+- for each cheat coord pair, get step delta to find saving
+
+part 2
+
+#####
+#345#
+#2#6#
+#1#7#
+#####
+total steps = 7
+
+#####
+#...#
+#234#
+#1#5#
+#####
+total steps = 5
+steps saved = 2 = (6 - 2) - 2
+                = (cheat end step) - (cheat start step) - 2
+
+#####
+#...#
+#.#.#
+#123#
+#####
+total steps = 3
+steps saved = 4 = (7 - 1) - 2
+                = (cheat end step) - (cheat start step) - 2
+      
+- for each step
+  - for every other step
+    if diff > 100
+      if coords within 20 manhatten distance
+        count += 1
+
+There are 32 cheats that save 50 picoseconds.
+There are 31 cheats that save 52 picoseconds.
+There are 29 cheats that save 54 picoseconds.
+There are 39 cheats that save 56 picoseconds.
+There are 25 cheats that save 58 picoseconds.
+There are 23 cheats that save 60 picoseconds.
+There are 20 cheats that save 62 picoseconds.
+There are 19 cheats that save 64 picoseconds.
+There are 12 cheats that save 66 picoseconds.
+There are 14 cheats that save 68 picoseconds.
+There are 12 cheats that save 70 picoseconds.
+There are 22 cheats that save 72 picoseconds.
+There are 4 cheats that save 74 picoseconds.
+There are 3 cheats that save 76 picoseconds.
+
+32 + 31 + 29 + 39 + 25 + 23 + 20 + 19 + 12 + 14 + 12 + 22 + 4  + 3
+285
+
+#####
+#345#
+#2#6#
+#1#7#
+#####
+total steps = 7
+
+#####
+#34B#
+#2#6#
+#A#7#
+#####
+between A & B:
+
+track steps = 5 - 1 = 4
+manhatten = 4
+
+manhatten from A to B is
+
+#####
+#345#
+#2#6#
+#1#7#
+#####
+
+t=((1, 3), (3, 2)) saves 2:
+m = 3
+ts = 6 - 1 = 5
+#####
+#...#
+#234#
+#1#5#
+#####
+
+t=((1, 3), (3, 3)) saves 4:
+m = 2
+ts = 7 - 1 = 6
+#####
+#...#
+#.#.#
+#123#
+#####
+
+t=((1, 2), (3, 2)) saves 2:
+m = 2
+ts = 6 - 2 = 4
+#####
+#...#
+#234#
+#1#5#
+#####
+
+t=((1, 2), (3, 3)) saves 2:
+m = 3
+ts = 7 - 2 = 5
+#####
+#...#
+#234#
+#1#5#
+#####
+
+saving = ts - m
