@@ -1,19 +1,15 @@
-f = 'input.txt'
+F = 'input.txt'
+F = 'input-example.txt'
 
-lines = []
-
-def go():
-  global lines
+def go(lines: list[str]) -> int:
   print(f"{lines=}")
   return 999
 
 def main():
-  global f, lines
-  with open(f) as f:
+  with open(F) as f:
     lines = f.readlines()
     lines = [line.strip() for line in lines]
-    lines = lines[0].split(' ')
-    return go()
+    return go(lines)
 
 if __name__ == '__main__':
   print(main())
