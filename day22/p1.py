@@ -3,9 +3,7 @@ f = 'input-example.txt'
 f = 'input.txt'
 # ITERATIONS = 10
 ITERATIONS = 2000
-def evolve(num):
-  # print(f"{num=}")
-  # num * 64
+def evolveSecret(num):
   num = ((num * 64) ^ num) % 16777216
   num = ((num // 32) ^ num) % 16777216
   num = ((num * 2048) ^ num) % 16777216
@@ -16,8 +14,7 @@ def go(nums):
   for num in nums:
     new = num
     for i in range(0, ITERATIONS):
-      new = evolve(new)
-    print(f"{num=}, {new=}")
+      new = evolveSecret(new)
     total += new
   return total
 
